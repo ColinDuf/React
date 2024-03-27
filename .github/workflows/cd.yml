@@ -1,17 +1,28 @@
-name: Expo CI CD
-
 on:
   push:
-    branches: [master]
+    branches:
+      - main
 jobs:
-  lint-and-tests:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - name: Setup repo
+        uses: actions/checkout@v3
 
-    - name: Install Node Modules
-      run: npm install
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
 
-    - name: Launch Tests
-      run: npm run test
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: eas build  --non-interactive --platform android --profile preview
