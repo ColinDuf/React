@@ -4,7 +4,6 @@ import { ExternalLink } from './ExternalLink';
 import { MonoText, Red, Button } from './StyledText';
 import { Text, View } from './Themed';
 import { ClickButton, CardLoading, ExoUseInterval } from './app.component';
-import Colors from '@/constants/themes';
 import { Counter } from './Compteur';
 import { MySectionList } from './afficherList';
 import { ListPerso } from './list.component';

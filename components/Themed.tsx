@@ -2,51 +2,63 @@ import { Text as DefaultText, View as DefaultView } from 'react-native';
 
 import Colors from '@/constants/themes';
 import { useColorScheme } from './useColorScheme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 type ThemeProps = {
   themeName?: keyof typeof Colors
 };
-  
+
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 
-export function useThemeColor(
-  props: {
-    themeName: null; light?: string; dark?: string 
-},
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.blue.colors
-) {
-  const themeNameFromProps = props.themeName ?? 'dark';
-  const theme = themeNameFromProps ?? useColorScheme() ?? 'light';
-  return Colors[theme][colorName];
-
+async function getThemeName(): Promise<keyof typeof Colors> {
+  try{
+    const value= await AsyncStorage.getItem('themeName');
+    if(value!== null){
+      return value as keyof typeof Colors;
+    }else{
+      return 'dark';
+    }
+  }catch(e){
+    throw new Error();
+  }
 }
 
 export function Text(props: TextProps) {
+  const [currentTheme,setCurrentTheme] =useState(Colors.light);
+  useEffect(() => {
+    getThemeName().then((nom: keyof typeof Colors)=>{
+      setCurrentTheme(Colors[nom]);
+    })
+  })
+
   const { style, ...otherProps } = props;
   if (props.themeName){
-    const color = useThemeColor({ themeName: props.themeName }, 'text');
+    const color = currentTheme.colors.text;
     return <DefaultText style={[{ color }, style]} {...otherProps} />;
   } else {
-    const color = useThemeColor({
-      themeName: null
-    }, 'text');
+    const color = currentTheme.colors.text
     return <DefaultText style={[{ color }, style]} {...otherProps} />;
   }
 
 }
 
 export function View(props: ViewProps) {
+  const [currentTheme,setCurrentTheme] =useState(Colors.light);
+  useEffect(() => {
+    getThemeName().then((nom: keyof typeof Colors)=>{
+      setCurrentTheme(Colors[nom]);
+    })
+  })
+
   const { style, ...otherProps } = props;
   if (props.themeName) {
-      const backgroundColor = useThemeColor(
-                         { themeName: props.themeName }, 'background');
+      const backgroundColor = currentTheme.colors.backround;
     return <DefaultView style={[{ backgroundColor }, style]}
                 {...otherProps} />;
     } else {
-      const backgroundColor = useThemeColor({
-        themeName: null
-      }, 'background');
+      const backgroundColor = currentTheme.colors.backround;
       return <DefaultView style={[{ backgroundColor }, style]} 	{...otherProps} />;
     }
   
