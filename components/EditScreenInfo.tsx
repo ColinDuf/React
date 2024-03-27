@@ -62,7 +62,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
       </View>
     </View></ScrollView>
   );
-}
+} 
 const styles = StyleSheet.create({
   getStartedContainer: {
     alignItems: 'center',
