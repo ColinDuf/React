@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, View, Text } from 'react-native'
 
 function HelloButton({ title, sayHello } : {title : string, sayHello: any}) {
@@ -12,6 +12,25 @@ import { Button, View, Text } from 'react-native'
     />
   )
 } 
+
+export function useInterval(callback: any, delay: any) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    if (delay !== null) {
+      let id = setInterval(() => {
+        savedCallback.current();
+      }, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 const Card = ({ loading, error, title } : {loading? : boolean, error? :  boolean, title? : string}) => { 
   
@@ -40,6 +59,14 @@ export function CardLoading() {
       <Card title="Voici le titre" />
     </View>
   )
+}
+
+export function ExoUseInterval() {
+  const [count, setCount] = useState(0);
+  useInterval(() => {
+    setCount(count + 1);
+  }, 1000);
+  return <Text style={{ fontSize: 120 }}>{count}</Text>;
 }
 
 

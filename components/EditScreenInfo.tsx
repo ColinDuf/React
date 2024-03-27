@@ -3,11 +3,13 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { ExternalLink } from './ExternalLink';
 import { MonoText, Red, Button } from './StyledText';
 import { Text, View } from './Themed';
-import { ClickButton, CardLoading } from './app.component';
+import { ClickButton, CardLoading, ExoUseInterval } from './app.component';
 import Colors from '@/constants/themes';
 import { Counter } from './Compteur';
 import { MySectionList } from './afficherList';
 import { ListPerso } from './list.component';
+import { IncrementCptUseState } from './ButtonUseState';
+import { IncrementCptUseReducer } from './ButtonUseReducer';
 
 
 export default function EditScreenInfo({ path }: { path: string }) {
@@ -30,9 +32,13 @@ export default function EditScreenInfo({ path }: { path: string }) {
         <MySectionList></MySectionList>
         <View><Button></Button></View>
         <ClickButton></ClickButton>
+        <View><ExoUseInterval></ExoUseInterval></View>
+
         <View><CardLoading></CardLoading></View>
         <View><ListPerso></ListPerso></View>
         <View><Counter></Counter></View>
+        <View><IncrementCptUseState></IncrementCptUseState></View>
+        <View><IncrementCptUseReducer></IncrementCptUseReducer></View>
 
 
         <View
