@@ -40,7 +40,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
         <View><IncrementCptUseState></IncrementCptUseState></View>
         <View><IncrementCptUseReducer></IncrementCptUseReducer></View>
 
-
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
           <MonoText>{path}</MonoText>
